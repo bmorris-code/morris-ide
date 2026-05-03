@@ -1,0 +1,110 @@
+name: Automated Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.1)'
+        required: true
+        default: '1.0.1'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build application
+      run: npm run build
+
+    - name: Build Electron app
+      run: npm run electron:build
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: morris-ide-${{ matrix.os }}
+        path: |
+          dist-electron/*.exe
+          dist-electron/*.dmg
+          dist-electron/*.AppImage
+          dist-electron/*.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Morris IDE ${{ github.ref_name || github.event.inputs.version }}
+        body: |
+          🚀 **Morris IDE ${{ github.ref_name || github.event.inputs.version }}**
+          
+          ## ✨ What's New
+          - Advanced multi-agent orchestration system
+          - 6 specialized AI agents for different development tasks
+          - Enhanced security and performance analysis
+          - Real-time AI streaming responses
+          - Support for Kimi K2.6 with 2M token context
+          
+          ## 📥 Downloads
+          Choose the appropriate download for your platform:
+          
+          ### Windows
+          - `MorrisIDE-Setup.exe` - Installer with auto-updates
+          
+          ### macOS  
+          - `MorrisIDE.dmg` - Drag and drop installation
+          
+          ### Linux
+          - `MorrisIDE.AppImage` - Portable application
+          
+          ## 🛠️ Setup
+          1. Download the appropriate file for your platform
+          2. Run the installer/launch the application
+          3. Configure your AI provider (Groq, Moonshot, or OpenAI)
+          4. Start coding with AI assistance!
+          
+          ## 📚 Documentation
+          - [User Guide](https://bmorris-code.github.io/morris-ide/)
+          - [Agent Documentation](https://bmorris-code.github.io/morris-ide/agents)
+          
+          ## 🐛 Bug Reports & Feedback
+          Please report any issues on our [GitHub Issues](https://github.com/bmorris-code/morris-ide/issues)
+          
+          ---
+          **Thank you for using Morris IDE! 🤖**
+        files: |
+          artifacts/**/*.exe
+          artifacts/**/*.dmg
+          artifacts/**/*.AppImage
+          artifacts/**/*.zip
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

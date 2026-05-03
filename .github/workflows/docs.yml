@@ -1,0 +1,71 @@
+name: Deploy Documentation
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build documentation
+      run: |
+        npm run build
+        mkdir -p docs-dist
+        cp -r dist/* docs-dist/
+        cp README.md docs-dist/
+        cp -r docs docs-dist/
+        echo "Morris IDE Documentation" > docs-dist/index.html
+        echo "<meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'>" >> docs-dist/index.html
+        echo "<title>Morris IDE - AI-Powered Development Environment</title>" >> docs-dist/index.html
+        echo "<style>body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;line-height:1.6}</style>" >> docs-dist/index.html
+        echo "<h1>🚀 Morris IDE</h1>" >> docs-dist/index.html
+        echo "<h2>Advanced AI-Powered IDE with Multi-Agent Orchestration</h2>" >> docs-dist/index.html
+        echo "<p><strong>Experience the future of coding with specialized AI agents!</strong></p>" >> docs-dist/index.html
+        echo "<h2>🎯 Key Features</h2>" >> docs-dist/index.html
+        echo "<ul><li>6 Specialized AI Agents</li><li>Multi-Agent Workflows</li><li>2M Token Context (Kimi K2.6)</li><li>Real-time Streaming</li><li>Enterprise Security</li></ul>" >> docs-dist/index.html
+        echo "<h2>📥 Quick Start</h2>" >> docs-dist/index.html
+        echo "<p><a href='https://github.com/bmorris-code/morris-ide/releases' style='background:#007bff;color:white;padding:10px 20px;text-decoration:none;border-radius:5px'>Download Now</a></p>" >> docs-dist/index.html
+        echo "<h2>📚 Documentation</h2>" >> docs-dist/index.html
+        echo "<ul><li><a href='README.md'>README</a></li><li><a href='docs/'>Full Documentation</a></li></ul>" >> docs-dist/index.html
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: docs-dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
