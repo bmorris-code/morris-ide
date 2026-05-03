@@ -1,0 +1,75 @@
+/* Morris IDE Main App Styling */
+
+#root {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'JetBrains Mono', sans-serif;
+  background-color: #0a0a0f;
+  color: white;
+}
+
+/* Remove ALL underlines immediately */
+* {
+  text-decoration: none !important;
+  text-underline-offset: 0 !important;
+  text-underline-position: initial !important;
+  -webkit-text-decoration: none !important;
+  -moz-text-decoration: none !important;
+  -ms-text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Specific targeting for sidebar and explorer */
+aside span,
+.px-2 span,
+.text-gray-400 span {
+  text-decoration: none !important;
+  text-underline-offset: 0 !important;
+  text-underline-position: initial !important;
+  -webkit-text-decoration: none !important;
+  -moz-text-decoration: none !important;
+  -ms-text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: inherit;
+}
+
+textarea,
+input {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111827;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
+}

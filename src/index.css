@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply m-0 p-0 w-full bg-gray-950;
+  }
+
+  body {
+    font-family: 'Inter', 'JetBrains Mono', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply text-white;
+  }
+
+  #root {
+    @apply h-full;
+  }
+
+  /* Only hide overflow for IDE pages, not landing page */
+  body.ide-page {
+    @apply overflow-hidden;
+  }
+
+  /* Remove underlines from specific text elements */
+  .no-underline {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from sidebar text */
+  aside button span {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from explorer headers */
+  .text-gray-400 {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from all button text */
+  button span {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from all text elements in IDE */
+  .ide-page * {
+    text-decoration: none !important;
+  }
+
+  /* Specific targeting for Explorer text */
+  .ide-page aside button span:has-text("Explorer") {
+    text-decoration: none !important;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+    text-decoration: none !important;
+  }
+
+  /* Aggressive underline removal for IDE */
+  .ide-page * {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from all span elements */
+  .ide-page span {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from all button elements */
+  .ide-page button {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from all text in sidebar */
+  .ide-page aside * {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Remove underlines from all text in file explorer */
+  .ide-page .text-gray-400 * {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+  }
+
+  /* Ultimate underline removal - override everything */
+  * {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+    -webkit-text-decoration: none !important;
+    -moz-text-decoration: none !important;
+    -ms-text-decoration: none !important;
+  }
+
+  /* Specific targeting for Explorer text */
+  aside button span {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+    -webkit-text-decoration: none !important;
+    -moz-text-decoration: none !important;
+    -ms-text-decoration: none !important;
+    border-bottom: none !important;
+  }
+
+  /* Specific targeting for MY PROJECT text */
+  .px-2 span {
+    text-decoration: none !important;
+    text-underline-offset: 0 !important;
+    text-underline-position: initial !important;
+    -webkit-text-decoration: none !important;
+    -moz-text-decoration: none !important;
+    -ms-text-decoration: none !important;
+    border-bottom: none !important;
+  }
+
+  ul,
+  ol {
+    @apply m-0 p-0 list-none;
+  }
+
+  h1, h2, h3, h4, h5, h6, p {
+    @apply m-0;
+  }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-violet-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-violet-500;
+  }
+}

@@ -1,0 +1,17 @@
+/* Test CSS file */
+.test-class {
+  color: #ffffff;
+  background-color: #007acc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#test-id {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

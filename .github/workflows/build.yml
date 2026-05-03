@@ -1,0 +1,127 @@
+name: Build Morris IDE
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (e.g., 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            artifact_name: MorrisIDE-${{ github.event.inputs.version || '1.0.0' }}.AppImage
+            installer_name: MorrisIDE-${{ github.event.inputs.version || '1.0.0' }}-Setup.AppImage
+          - os: windows-latest
+            platform: windows
+            artifact_name: MorrisIDE-${{ github.event.inputs.version || '1.0.0' }}-Setup.exe
+            installer_name: MorrisIDE-${{ github.event.inputs.version || '1.0.0' }}-Setup.exe
+          - os: macos-latest
+            platform: mac
+            artifact_name: MorrisIDE-${{ github.event.inputs.version || '1.0.0' }}.dmg
+            installer_name: MorrisIDE-${{ github.event.inputs.version || '1.0.0' }}.dmg
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Build Electron app
+        run: npm run electron:build
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: morris-ide-${{ matrix.platform }}
+          path: |
+            release/${{ matrix.installer_name }}
+            release/latest.yml
+            release/*.blockmap
+          retention-days: 30
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Morris IDE ${{ github.ref_name }}
+          body: |
+            ## Morris IDE ${{ github.ref_name }}
+            
+            AI-Native Secure Development Environment
+            
+            ### Downloads:
+            
+            #### 🪟 Windows
+            - `MorrisIDE-${{ github.ref_name }}-Setup.exe` - Standard installer
+            - Run the installer and follow the setup wizard
+            
+            #### 🐧 Linux
+            - `MorrisIDE-${{ github.ref_name }}.AppImage` - Portable AppImage
+            - Make executable: `chmod +x MorrisIDE-*.AppImage`
+            - Run: `./MorrisIDE-*.AppImage`
+            
+            #### 🍎 macOS
+            - `MorrisIDE-${{ github.ref_name }}.dmg` - macOS disk image
+            - Open the DMG and drag Morris IDE to Applications
+            
+            ### Features:
+            - 🤖 AI-powered code assistance
+            - 📝 Multi-language support
+            - 🔒 Secure development environment
+            - ⚡ Fast performance
+            - 🎨 Modern UI
+            
+            ### Requirements:
+            - Windows 10+ / macOS 10.15+ / Linux (Ubuntu 18.04+)
+            - 4GB RAM minimum
+            - 500MB disk space
+            
+            ---
+            
+            **Note**: You'll need to set up API keys for AI providers (Groq, Moonshot, OpenAI) in the settings.
+          files: |
+            artifacts/morris-ide-windows/*.exe
+            artifacts/morris-ide-windows/*.yml
+            artifacts/morris-ide-windows/*.blockmap
+            artifacts/morris-ide-linux/*.AppImage
+            artifacts/morris-ide-linux/*.yml
+            artifacts/morris-ide-linux/*.blockmap
+            artifacts/morris-ide-mac/*.dmg
+            artifacts/morris-ide-mac/*.yml
+            artifacts/morris-ide-mac/*.blockmap
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
