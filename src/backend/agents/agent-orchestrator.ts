@@ -3,8 +3,7 @@ import type {
   AgentRole, 
   AgentTask, 
   AgentOrchestration, 
-  AgentSession,
-  AgentWorkflowStep 
+  AgentSession
 } from '../../types/agents';
 import type { CodeContext } from '../../types/ai';
 import { generateAIResponse, generateAIResponseStream } from '../ai';
@@ -547,6 +546,7 @@ Please build upon the previous results while adding your unique expertise from y
     activeTasks: number;
     completedTasks: number;
     failedTasks: number;
+    maxConcurrentTasks: number;
   } {
     const allTasks = Array.from(this.activeTasks.values());
     
@@ -555,7 +555,8 @@ Please build upon the previous results while adding your unique expertise from y
       totalSessions: this.sessions.size,
       activeTasks: allTasks.filter(t => t.status === 'running').length,
       completedTasks: allTasks.filter(t => t.status === 'completed').length,
-      failedTasks: allTasks.filter(t => t.status === 'failed').length
+      failedTasks: allTasks.filter(t => t.status === 'failed').length,
+      maxConcurrentTasks: this.config.maxConcurrentTasks
     };
   }
 }

@@ -7,15 +7,12 @@ import {
   Square, 
   Settings, 
   MessageSquare, 
-  Code, 
   Zap, 
   CheckCircle, 
   XCircle, 
   Clock,
   ChevronRight,
-  Plus,
-  Trash2,
-  Edit
+  Plus
 } from 'lucide-react';
 import type { AgentRole, AgentTask, AgentSession, AgentOrchestration } from '../../types/agents';
 import { agentOrchestrator, type OrchestratorConfig } from '../../backend/agents/agent-orchestrator';

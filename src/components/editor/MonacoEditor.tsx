@@ -77,8 +77,8 @@ export default function MonacoEditorPanel() {
 
     // Register Code Action Provider for Quick Fixes
     monaco.languages.registerCodeActionProvider('*', {
-      provideCodeActions: (_model, _range, context) => {
-        const actions = context.markers.flatMap(marker => [
+      provideCodeActions: (_model: any, _range: any, context: any) => {
+        const actions = (context as any).markers.flatMap((marker: any) => [
           {
             title: `✨ Fix with Morris AI`,
             diagnostics: [marker],
@@ -110,7 +110,7 @@ export default function MonacoEditorPanel() {
 
     // Register Hover Provider for AI Quick Actions
     monaco.languages.registerHoverProvider('*', {
-      provideHover: (model, position) => {
+      provideHover: (model: any, position: any) => {
         // Get markers at the current position
         const markers = monaco.editor.getModelMarkers({
           resource: model.uri,
@@ -119,7 +119,7 @@ export default function MonacoEditorPanel() {
         });
 
         // Filter markers that are at or near the cursor position
-        const relevantMarkers = markers.filter(marker =>
+        const relevantMarkers = markers.filter((marker: any) =>
           position.column >= marker.startColumn &&
           position.column <= marker.endColumn
         );

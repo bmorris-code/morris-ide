@@ -1,5 +1,5 @@
 // backend/agents/prompt-builder.ts
-import type { AgentRole, AgentPrompt } from '../../types/agents';
+import type { AgentRole } from '../../types/agents';
 import type { CodeContext } from '../../types/ai';
 
 export interface PromptBuildContext {
