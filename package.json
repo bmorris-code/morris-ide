@@ -15,7 +15,7 @@
     "dev:electron": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
     "build": "tsc -b && vite build",
     "build:electron": "npm run build && npm run electron:compile",
-    "electron:compile": "tsc -p tsconfig.electron.json && move /Y dist-electron\\main.js dist-electron\\main.cjs && move /Y dist-electron\\preload.js dist-electron\\preload.cjs",
+    "electron:compile": "tsc -p tsconfig.electron.json && node -e \"require('fs').renameSync('dist-electron/main.js', 'dist-electron/main.cjs'); require('fs').renameSync('dist-electron/preload.js', 'dist-electron/preload.cjs');\"",
     "electron:start": "electron .",
     "electron:build": "npm run build:electron && electron-builder",
     "electron:build:win": "npm run build:electron && electron-builder --win",

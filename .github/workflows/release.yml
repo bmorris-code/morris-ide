@@ -42,10 +42,11 @@ jobs:
       with:
         name: morris-ide-${{ matrix.os }}
         path: |
-          dist-electron/*.exe
-          dist-electron/*.dmg
-          dist-electron/*.AppImage
-          dist-electron/*.zip
+          release/*.exe
+          release/*.dmg
+          release/*.AppImage
+          release/*.deb
+          release/*.zip
 
   release:
     needs: build
