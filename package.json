@@ -94,8 +94,7 @@
           ]
         }
       ],
-      "icon": "public/icon.ico",
-      "artifactName": "MorrisIDE-${version}-Setup.${ext}"
+            "artifactName": "MorrisIDE-${version}-Setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
