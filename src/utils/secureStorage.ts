@@ -132,6 +132,52 @@ export class SecureStorage {
     return !!key;
   }
 
+  // Generic storage methods for usage tracking and other data
+  async setData(key: string, data: any): Promise<boolean> {
+    try {
+      const serialized = JSON.stringify(data);
+      if (this.isElectron) {
+        const success = await window.electronAPI?.safeStorage.encrypt(key, serialized);
+        return success || false;
+      } else {
+        localStorage.setItem(key, serialized);
+        return true;
+      }
+    } catch (error) {
+      console.error('Failed to store data:', error);
+      return false;
+    }
+  }
+
+  async getData(key: string): Promise<any> {
+    try {
+      if (this.isElectron) {
+        const data = await window.electronAPI?.safeStorage.decrypt(key);
+        return data ? JSON.parse(data) : null;
+      } else {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+      }
+    } catch (error) {
+      console.error('Failed to retrieve data:', error);
+      return null;
+    }
+  }
+
+  async removeData(key: string): Promise<boolean> {
+    try {
+      if (this.isElectron) {
+        return await window.electronAPI?.safeStorage.remove(key) || false;
+      } else {
+        localStorage.removeItem(key);
+        return true;
+      }
+    } catch (error) {
+      console.error('Failed to remove data:', error);
+      return false;
+    }
+  }
+
   private getStorageKey(provider?: string): string {
     const base = 'morris_ide_secure';
     return provider ? `${base}_${provider}` : base;

@@ -3,6 +3,8 @@ import type { AISettings, CodeContext, AIProvider } from '../../types/ai';
 import { DEFAULT_AI_SETTINGS, AI_MODELS } from '../../types/ai';
 import { logger } from '../../utils/logger';
 import { secureStorage } from '../../utils/secureStorage';
+import { usageTracker } from './usage-tracker';
+import { privacyGuard } from './privacy-guard';
 
 // ============ PROVIDER CONFIGURATION ============
 
@@ -377,10 +379,37 @@ export const generateAIResponse = async (
   }
 
   try {
-    const messages = buildMessages(prompt, codeContext, provider);
+    // Privacy check before processing
+    let processedContext = codeContext;
+    if (codeContext && codeContext.filePath) {
+      const privacyResult = await privacyGuard.processCodeForAI(
+        codeContext.filePath,
+        codeContext.fullCode || '',
+        codeContext.selectedCode
+      );
+
+      if (!privacyResult.shouldProceed) {
+        return {
+          content: privacyGuard.generatePrivacyWarning(privacyResult.warnings),
+          error: 'Privacy check failed - review sensitive content',
+          provider,
+          model: settings.model,
+        };
+      }
+
+      // Update context with processed code
+      processedContext = {
+        ...codeContext,
+        fullCode: privacyResult.processedCode,
+        selectedCode: privacyResult.processedSelectedCode,
+      };
+    }
+
+    const messages = buildMessages(prompt, processedContext, provider);
     
     const validModel = getValidModel(provider, settings.model);
     
+    let response;
     if (provider === 'groq' && clients.groq.client) {
       // Use Groq SDK
       const completion = await clients.groq.client.chat.completions.create({
@@ -391,21 +420,18 @@ export const generateAIResponse = async (
         stream: false,
       });
 
-      return {
+      response = {
         content: completion.choices[0]?.message?.content || '',
         usage: completion.usage ? {
           promptTokens: completion.usage.prompt_tokens,
           completionTokens: completion.usage.completion_tokens,
           totalTokens: completion.usage.total_tokens,
         } : undefined,
-        provider,
-        model: settings.model,
-        latencyMs: Date.now() - startTime,
       };
     } else {
       // Use fetch for Moonshot/OpenAI
       const config = PROVIDER_CONFIGS[provider];
-      const response = await fetch(`${config.baseUrl}/chat/completions`, {
+      const apiResponse = await fetch(`${config.baseUrl}/chat/completions`, {
         method: 'POST',
         headers: config.headers(clients[provider].apiKey),
         body: JSON.stringify({
@@ -417,25 +443,48 @@ export const generateAIResponse = async (
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error?.message || `HTTP ${response.status}`);
+      if (!apiResponse.ok) {
+        const errorData = await apiResponse.json().catch(() => ({}));
+        throw new Error(errorData.error?.message || `HTTP ${apiResponse.status}`);
       }
 
-      const data = await response.json();
-      
-      return {
+      const data = await apiResponse.json();
+      response = {
         content: data.choices[0]?.message?.content || '',
         usage: data.usage ? {
           promptTokens: data.usage.prompt_tokens,
           completionTokens: data.usage.completion_tokens,
           totalTokens: data.usage.total_tokens,
         } : undefined,
-        provider,
-        model: settings.model,
-        latencyMs: Date.now() - startTime,
       };
     }
+
+    // Track usage
+    if (response.usage) {
+      const usageResult = await usageTracker.trackUsage(
+        provider,
+        validModel,
+        response.usage.promptTokens,
+        response.usage.completionTokens
+      );
+
+      if (usageResult.exceededQuota) {
+        return {
+          content: '',
+          error: `Daily quota exceeded for ${PROVIDER_CONFIGS[provider].name}. Please try again tomorrow or increase your quota in settings.`,
+          provider,
+          model: settings.model,
+          latencyMs: Date.now() - startTime,
+        };
+      }
+    }
+
+    return {
+      ...response,
+      provider,
+      model: settings.model,
+      latencyMs: Date.now() - startTime,
+    };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     logger.error(`${provider} API error`, 'AI', { error: errorMessage, prompt: prompt.substring(0, 100) });
