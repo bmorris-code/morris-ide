@@ -8,12 +8,14 @@ const ENV_PROVIDER_MAP: Record<string, AIProvider> = {
   VITE_GROQ_API_KEY: 'groq',
   VITE_MOONSHOT_API_KEY: 'moonshot',
   VITE_OPENAI_API_KEY: 'openai',
+  VITE_DEEPSEEK_API_KEY: 'deepseek',
 };
 
 export function useAI() {
   const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
   const moonshotApiKey = import.meta.env.VITE_MOONSHOT_API_KEY;
   const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+  const deepseekApiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
 
   const [isInitialized, setIsInitialized] = useState(false);
   const [initializedProviders, setInitializedProviders] = useState<AIProvider[]>([]);

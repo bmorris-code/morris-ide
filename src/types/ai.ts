@@ -1,5 +1,5 @@
 // types/ai.ts
-export type AIProvider = 'groq' | 'moonshot' | 'openai';
+export type AIProvider = 'groq' | 'moonshot' | 'openai' | 'deepseek';
 
 export interface AIModel {
   id: string;
@@ -25,12 +25,18 @@ export const AI_MODELS: AIModel[] = [
   // OpenAI
   { id: 'gpt-4o', name: 'GPT-4o', provider: 'openai', contextWindow: 128000 },
   { id: 'gpt-4o-mini', name: 'GPT-4o Mini', provider: 'openai', contextWindow: 128000 },
+  
+  // DeepSeek
+  { id: 'deepseek-chat', name: 'DeepSeek Chat', provider: 'deepseek', contextWindow: 128000, description: 'General purpose coding assistant' },
+  { id: 'deepseek-coder', name: 'DeepSeek Coder', provider: 'deepseek', contextWindow: 128000, description: 'Specialized for code generation', recommended: true },
+  { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner', provider: 'deepseek', contextWindow: 64000, description: 'Advanced reasoning capabilities', isNew: true },
 ];
 
 export const AI_PROVIDERS = [
   { id: 'groq' as AIProvider, name: 'Groq' },
   { id: 'moonshot' as AIProvider, name: 'Kimi (Moonshot)' },
   { id: 'openai' as AIProvider, name: 'OpenAI' },
+  { id: 'deepseek' as AIProvider, name: 'DeepSeek' }, // Added for code generation
 ];
 
 export interface AISettings {

@@ -45,6 +45,16 @@ const PROVIDER_CONFIGS: Record<AIProvider, ProviderConfig> = {
       'Content-Type': 'application/json',
     }),
   },
+  deepseek: {
+    name: 'DeepSeek',
+    baseUrl: 'https://api.deepseek.com/v1',
+    defaultModel: 'deepseek-coder',
+    apiKeyEnvVar: 'DEEPSEEK_API_KEY',
+    headers: (apiKey) => ({
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+    }),
+  },
 };
 
 // ============ CLIENT MANAGEMENT ============
@@ -59,6 +69,7 @@ const clients: Record<AIProvider, ClientState> = {
   groq: { client: null, apiKey: '', provider: 'groq' },
   moonshot: { client: null, apiKey: '', provider: 'moonshot' },
   openai: { client: null, apiKey: '', provider: 'openai' },
+  deepseek: { client: null, apiKey: '', provider: 'deepseek' },
 };
 
 // Enhanced API key validation
@@ -94,6 +105,15 @@ const validateApiKey = (provider: AIProvider, apiKey: string): { valid: boolean;
       }
       if (trimmedKey.length < 20) {
         return { valid: false, error: 'OpenAI API key appears to be too short' };
+      }
+      break;
+      
+    case 'deepseek':
+      if (!trimmedKey.startsWith('sk-')) {
+        return { valid: false, error: 'DeepSeek API key must start with "sk-"' };
+      }
+      if (trimmedKey.length < 20) {
+        return { valid: false, error: 'DeepSeek API key appears to be too short' };
       }
       break;
       
@@ -233,6 +253,24 @@ Guidelines:
 - Consider edge cases and error handling
 - Follow language-specific conventions
 - Suggest testing strategies when relevant`,
+  
+  deepseek: `You are DeepSeek Coder, an advanced AI coding assistant integrated into Morris IDE, powered by DeepSeek AI.
+
+Your Capabilities:
+- Specialized code generation and understanding
+- Strong performance on programming tasks
+- Efficient problem-solving and debugging
+- Support for multiple programming languages
+
+Guidelines:
+- Provide accurate, well-structured code solutions
+- Explain complex algorithms and implementation details
+- Identify potential bugs and suggest improvements
+- Follow best practices and coding standards
+- Consider performance and optimization opportunities
+- Use proper markdown code blocks with language identifiers
+- Be thorough yet concise in your explanations
+- Focus on practical, implementable solutions`,
 };
 
 // ============ RESPONSE TYPES ============

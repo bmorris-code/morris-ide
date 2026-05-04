@@ -13,6 +13,9 @@ import TerminalPanel from '../terminal/TerminalPanel';
 import FileExplorer from '../explorer/FileExplorer';
 import { UserButton } from '@clerk/clerk-react';
 import { useProjectStore, useEditorStore, useAuthStore, useTerminalStore, useProblemsStore } from '../../store';
+
+// Clerk publishable key (set in .env)
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 import { scanProject } from '../../backend/security';
 import { useElectron, useAI } from '../../hooks';
 import TitleBar from './TitleBar';
@@ -347,18 +350,25 @@ function MenuBar({
           Cmd
         </button>
         {/* Profile Icon */}
-        {!electron.isElectron ? (
+        {!electron.isElectron && (
           <div className="ml-4 flex items-center">
-            <UserButton 
-              appearance={{
-                elements: {
-                  avatarBox: "w-6 h-6 border border-gray-700"
-                }
-              }}
-              afterSignOutUrl="/" 
-            />
+            {clerkPubKey ? (
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "w-6 h-6 border border-gray-700"
+                  }
+                }}
+                afterSignOutUrl="/" 
+              />
+            ) : (
+              <div className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center">
+                <span className="text-xs text-gray-400">U</span>
+              </div>
+            )}
           </div>
-        ) : profile && (
+        )}
+        {profile && (
           <div className="flex items-center gap-2 ml-4">
             <div className="w-6 h-6 bg-violet-600 rounded-full flex items-center justify-center text-xs font-medium">
               {profile.name.charAt(0).toUpperCase()}

@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { Download, Code2, Key, Settings, ArrowRight, Laptop, Server, Zap } from 'lucide-react';
 import { useState } from 'react';
 
+// Clerk publishable key (set in .env)
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
 export default function DashboardPage() {
-  const { user, isLoaded } = useUser();
-  const clerk = useClerk();
+  const { user, isLoaded } = clerkPubKey ? useUser() : { user: null, isLoaded: true };
+  const clerk = clerkPubKey ? useClerk() : null;
   const [downloadProgress, setDownloadProgress] = useState<number | null>(null);
 
   const handleDownload = () => {
@@ -56,14 +59,16 @@ export default function DashboardPage() {
             <span className="font-bold text-lg tracking-tight">Morris IDE</span>
           </div>
           <div className="flex items-center gap-4">
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "w-9 h-9 border-2 border-gray-800 hover:border-violet-500 transition-colors"
-                }
-              }}
-              afterSignOutUrl="/"
-            />
+            {clerkPubKey && (
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "w-9 h-9 border-2 border-gray-800 hover:border-violet-500 transition-colors"
+                  }
+                }}
+                afterSignOutUrl="/"
+              />
+            )}
           </div>
         </div>
       </nav>

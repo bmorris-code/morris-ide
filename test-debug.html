@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug AI Providers</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: white; }
+        .provider { margin: 10px 0; padding: 10px; background: #2a2a2a; border-radius: 5px; }
+        .present { color: #4ade80; }
+        .missing { color: #f87171; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Morris IDE Debug</h1>
+    
+    <h2>Environment Variables</h2>
+    <div id="env-vars"></div>
+    
+    <h2>AI Providers</h2>
+    <div id="providers"></div>
+    
+    <h2>Console Check</h2>
+    <p>Open browser console (F12) to see detailed logs</p>
+
+    <script>
+        // Check environment variables
+        const envVars = [
+            'VITE_GROQ_API_KEY',
+            'VITE_MOONSHOT_API_KEY',
+            'VITE_OPENAI_API_KEY', 
+            'VITE_DEEPSEEK_API_KEY',
+            'VITE_CLERK_PUBLISHABLE_KEY'
+        ];
+        
+        const envDiv = document.getElementById('env-vars');
+        envVars.forEach(envVar => {
+            const value = import.meta.env?.[envVar];
+            const div = document.createElement('div');
+            div.className = value ? 'present' : 'missing';
+            div.textContent = `${envVar}: ${value ? '✓ SET' : '✗ NOT SET'}`;
+            if (value) {
+                div.textContent += ` (${value.substring(0, 15)}...)`;
+            }
+            envDiv.appendChild(div);
+        });
+        
+        // Simulate AI providers array
+        const providers = [
+            { id: 'groq', name: 'Groq' },
+            { id: 'moonshot', name: 'Kimi (Moonshot)' },
+            { id: 'openai', name: 'OpenAI' },
+            { id: 'deepseek', name: 'DeepSeek' }
+        ];
+        
+        const provDiv = document.getElementById('providers');
+        providers.forEach(provider => {
+            const div = document.createElement('div');
+            div.className = 'provider';
+            div.innerHTML = `<strong>${provider.id}:</strong> ${provider.name}`;
+            provDiv.appendChild(div);
+        });
+        
+        // Log to console
+        console.log('=== Morris IDE Debug ===');
+        console.log('Environment:', import.meta.env);
+        console.log('Providers:', providers);
+        
+        // Check if we can access the main app
+        setTimeout(() => {
+            const iframe = document.createElement('iframe');
+            iframe.src = '/';
+            iframe.style.display = 'none';
+            document.body.appendChild(iframe);
+        }, 1000);
+    </script>
+</body>
+</html>

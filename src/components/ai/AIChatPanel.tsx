@@ -249,6 +249,8 @@ function ProviderBadge({ provider }: { provider: AIProvider }) {
 
     openai: { color: 'text-green-400', bg: 'bg-green-400/10', label: 'OpenAI' },
 
+    deepseek: { color: 'text-cyan-400', bg: 'bg-cyan-400/10', label: 'DeepSeek' },
+
   };
 
   const config = configs[provider] || configs.groq;
@@ -724,6 +726,8 @@ export default function AIChatPanel() {
 
                     {provider.id === 'openai' && <Sparkles size={12} />}
 
+                    {provider.id === 'deepseek' && <Code size={12} />}
+
                     {provider.name}
 
                   </div>
@@ -745,8 +749,9 @@ export default function AIChatPanel() {
             <label className="text-xs font-medium text-gray-400 block mb-1.5">
 
               {selectedProvider === 'moonshot' ? 'Moonshot API Key' : 
-
-               selectedProvider === 'groq' ? 'Groq API Key' : 'OpenAI API Key'}
+               selectedProvider === 'groq' ? 'Groq API Key' : 
+               selectedProvider === 'deepseek' ? 'DeepSeek API Key' :
+               'OpenAI API Key'}
 
             </label>
 
@@ -760,7 +765,7 @@ export default function AIChatPanel() {
 
                 onChange={(e) => setApiKeyInput(e.target.value)}
 
-                placeholder={currentApiKey ? '••••••••••••' : `Enter your ${selectedProvider} API key`}
+                placeholder={currentApiKey ? '••••••••••••' : `Enter your ${selectedProvider === 'deepseek' ? 'DeepSeek' : selectedProvider === 'moonshot' ? 'Moonshot' : selectedProvider === 'groq' ? 'Groq' : 'OpenAI'} API key`}
 
                 className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-violet-500 transition-colors"
 
@@ -797,6 +802,16 @@ export default function AIChatPanel() {
               <p className="text-[10px] text-gray-500 mt-1">
 
                 Get your key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener" className="text-violet-400 hover:underline">console.groq.com/keys</a>
+
+              </p>
+
+            )}
+
+            {selectedProvider === 'deepseek' && (
+
+              <p className="text-[10px] text-gray-500 mt-1">
+
+                Get your key at <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener" className="text-violet-400 hover:underline">platform.deepseek.com/api_keys</a>
 
               </p>
 
@@ -958,13 +973,13 @@ export default function AIChatPanel() {
 
               <p className="text-yellow-500/70">
 
-                Set your {selectedProvider === 'moonshot' ? 'Moonshot' : selectedProvider === 'openai' ? 'OpenAI' : 'Groq'} API key in settings or add it to your .env file.
+                Set your {selectedProvider === 'moonshot' ? 'Moonshot' : selectedProvider === 'deepseek' ? 'DeepSeek' : selectedProvider === 'openai' ? 'OpenAI' : 'Groq'} API key in settings or add it to your .env file.
 
               </p>
 
               <p className="text-yellow-500/50 mt-1">
 
-                Get your key at {selectedProvider === 'moonshot' ? 'platform.moonshot.cn' : selectedProvider === 'openai' ? 'platform.openai.com/api-keys' : 'console.groq.com/keys'}
+                Get your key at {selectedProvider === 'moonshot' ? 'platform.moonshot.cn' : selectedProvider === 'deepseek' ? 'platform.deepseek.com/api_keys' : selectedProvider === 'openai' ? 'platform.openai.com/api-keys' : 'console.groq.com/keys'}
 
               </p>
 
@@ -1050,7 +1065,7 @@ export default function AIChatPanel() {
 
             <span className="text-[10px] text-gray-600">
 
-              {selectedProvider === 'moonshot' ? 'Powered by Kimi' : 'Powered by Groq'}
+              {selectedProvider === 'moonshot' ? 'Powered by Kimi' : selectedProvider === 'deepseek' ? 'Powered by DeepSeek' : 'Powered by Groq'}
 
             </span>
 

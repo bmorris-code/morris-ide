@@ -2,6 +2,9 @@ import { Link } from 'react-router-dom';
 import { Download, Shield, Bot, Zap, Code, Lock, Check } from 'lucide-react';
 import { SignedIn, SignedOut } from '@clerk/clerk-react';
 
+// Clerk publishable key (set in .env)
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
 export default function LandingPage() {
   const desktopDownloads = [
     {
@@ -69,17 +72,28 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <SignedOut>
-              <Link to="/login" className="text-sm text-gray-300 hover:text-white transition">Sign In</Link>
-              <Link to="/ide" className="px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg text-sm font-medium transition">
-                Get Started
-              </Link>
-            </SignedOut>
-            <SignedIn>
-              <Link to="/dashboard" className="px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg text-sm font-medium transition">
-                Dashboard
-              </Link>
-            </SignedIn>
+            {clerkPubKey ? (
+              <>
+                <SignedOut>
+                  <Link to="/login" className="text-sm text-gray-300 hover:text-white transition">Sign In</Link>
+                  <Link to="/ide" className="px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg text-sm font-medium transition">
+                    Get Started
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  <Link to="/dashboard" className="px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg text-sm font-medium transition">
+                    Dashboard
+                  </Link>
+                </SignedIn>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="text-sm text-gray-300 hover:text-white transition">Sign In</Link>
+                <Link to="/ide" className="px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-lg text-sm font-medium transition">
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

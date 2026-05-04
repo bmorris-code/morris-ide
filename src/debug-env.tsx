@@ -2,6 +2,7 @@ export default function DebugEnv() {
   const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
   const groqKey = import.meta.env.VITE_GROQ_API_KEY;
   const moonshotKey = import.meta.env.VITE_MOONSHOT_API_KEY;
+  const deepseekKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
   
   return (
     <div className="min-h-screen bg-gray-950 text-white p-8">
@@ -31,6 +32,15 @@ export default function DebugEnv() {
           <p><strong>Key Length:</strong> {moonshotKey?.length || 0}</p>
           <p><strong>Key Preview:</strong> {moonshotKey ? `${moonshotKey.substring(0, 10)}...` : 'N/A'}</p>
           <p className="text-xs text-violet-400/70 mt-2">Get your key at platform.moonshot.cn</p>
+        </div>
+        
+        <div className="p-4 bg-gray-900 rounded-lg border border-cyan-500/30">
+          <h2 className="text-lg font-semibold mb-2 text-cyan-400">DeepSeek Configuration 🔥</h2>
+          <p><strong>Key Present:</strong> {deepseekKey ? 'YES' : 'NO'}</p>
+          <p><strong>Key Format:</strong> {deepseekKey?.startsWith('sk-') ? 'VALID' : 'INVALID'}</p>
+          <p><strong>Key Length:</strong> {deepseekKey?.length || 0}</p>
+          <p><strong>Key Preview:</strong> {deepseekKey ? `${deepseekKey.substring(0, 10)}...` : 'N/A'}</p>
+          <p className="text-xs text-cyan-400/70 mt-2">Get your key at platform.deepseek.com/api_keys</p>
         </div>
         
         <div className="p-4 bg-gray-900 rounded-lg">

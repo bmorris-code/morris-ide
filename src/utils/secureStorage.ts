@@ -142,9 +142,10 @@ export class SecureStorage {
       groq: import.meta.env.VITE_GROQ_API_KEY,
       moonshot: import.meta.env.VITE_MOONSHOT_API_KEY,
       openai: import.meta.env.VITE_OPENAI_API_KEY,
+      deepseek: import.meta.env.VITE_DEEPSEEK_API_KEY,
     };
     const key = envMap[provider];
-    return key && key !== 'gsk_your_actual_groq_api_key_here' && key !== 'sk-your_moonshot_api_key_here' && key !== 'sk-your_openai_api_key_here' ? key : null;
+    return key && key !== 'gsk_your_actual_groq_api_key_here' && key !== 'sk-your_moonshot_api_key_here' && key !== 'sk-your_openai_api_key_here' && key !== 'sk-your_actual_deepseek_api_key_here' ? key : null;
   }
 
   // Simple encryption for web storage (not as secure as Electron's safeStorage)
