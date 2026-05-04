@@ -191,7 +191,7 @@ export default function DashboardPage() {
             </div>
 
             <div
-              onClick={() => clerk.openUserProfile()}
+              onClick={() => clerk?.openUserProfile()}
               className="rounded-2xl bg-gray-900 border border-gray-800 p-6 flex items-start gap-4 hover:border-violet-500/50 hover:bg-gray-800/50 transition-all cursor-pointer group active:scale-[0.98]"
             >
               <div className="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center border border-gray-700 group-hover:bg-violet-500/10 group-hover:border-violet-500/50 transition-colors">

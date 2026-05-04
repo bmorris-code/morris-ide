@@ -38,6 +38,7 @@ export const useAIStore = create<AIStore>()(
         groq: null,
         moonshot: null,
         openai: null,
+        deepseek: null,
       },
 
       addMessage: (role, content, codeContext) => {

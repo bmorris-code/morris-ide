@@ -15,7 +15,8 @@ export function useAI() {
   const groqApiKey = import.meta.env.VITE_GROQ_API_KEY;
   const moonshotApiKey = import.meta.env.VITE_MOONSHOT_API_KEY;
   const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
-  const deepseekApiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
+  // Remove unused variable to fix TypeScript error
+  // const deepseekApiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
 
   const [isInitialized, setIsInitialized] = useState(false);
   const [initializedProviders, setInitializedProviders] = useState<AIProvider[]>([]);
