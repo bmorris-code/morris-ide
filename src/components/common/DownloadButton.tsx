@@ -10,9 +10,9 @@ interface OSVersion {
 }
 
 const OS_VERSIONS: OSVersion[] = [
-  { name: 'Windows', icon: '🪟', url: 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0-Setup.exe', filename: 'MorrisIDE-Setup.exe', size: '82MB' },
-  { name: 'macOS', icon: '🍎', url: 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0.dmg', filename: 'MorrisIDE.dmg', size: '95MB' },
-  { name: 'Linux', icon: '🐧', url: 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0.AppImage', filename: 'MorrisIDE.AppImage', size: '88MB' },
+  { name: 'Windows', icon: '🪟', url: 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0-Setup.exe', filename: 'MorrisIDE-Setup.exe', size: '82MB' },
+  { name: 'macOS', icon: '🍎', url: 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0.dmg', filename: 'MorrisIDE.dmg', size: '95MB' },
+  { name: 'Linux', icon: '🐧', url: 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0.AppImage', filename: 'MorrisIDE.AppImage', size: '88MB' },
 ];
 
 export const DownloadButton: React.FC<{ className?: string, variant?: 'primary' | 'outline' }> = ({ className = '', variant = 'primary' }) => {
