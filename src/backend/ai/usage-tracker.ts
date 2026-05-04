@@ -73,6 +73,11 @@ export class UsageTracker {
       this.stats.set(key, stats);
     }
 
+    // Ensure stats is defined
+    if (!stats) {
+      throw new Error(`Failed to initialize usage stats for provider: ${provider}`);
+    }
+
     // Reset daily stats if needed
     const today = new Date().toDateString();
     if (stats.lastReset !== today) {
