@@ -9,17 +9,17 @@ export default function LandingPage() {
   const desktopDownloads = [
     {
       label: 'Windows',
-      url: 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0-Setup.exe',
+      url: 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0-Setup.exe',
       fileSize: '~82 MB'
     },
     {
       label: 'macOS',
-      url: 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0.dmg',
+      url: 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0.dmg',
       fileSize: '~95 MB'
     },
     {
       label: 'Linux',
-      url: 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0.AppImage',
+      url: 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0.AppImage',
       fileSize: '~88 MB'
     },
   ];

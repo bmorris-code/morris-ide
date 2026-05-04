@@ -24,7 +24,7 @@ export default function DashboardPage() {
 
         // Trigger actual download
         const link = document.createElement('a');
-        link.href = 'https://github.com/morris-ide/morris-ide/releases/latest/download/MorrisIDE-1.0.0-Setup.exe';
+        link.href = 'https://github.com/bmorris-code/morris-ide/releases/latest/download/MorrisIDE-1.0.0-Setup.exe';
         link.download = 'MorrisIDE-Setup.exe';
         document.body.appendChild(link);
         link.click();
