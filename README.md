@@ -4,6 +4,23 @@
 
 **Morris IDE** is the next-generation development environment that revolutionizes coding with specialized AI agents. Experience intelligent code assistance like never before with our revolutionary multi-agent orchestration system.
 
+## 🆕 **Recent Updates (v1.0.0)**
+
+### 🔧 **Critical Fixes & Improvements**
+- ✅ **Build System**: Fixed TypeScript compilation errors and ESLint configuration
+- ✅ **Cross-Platform**: Resolved electron build scripts for Windows, macOS, and Linux
+- ✅ **Download System**: Fixed GitHub release URLs and OS availability detection
+- ✅ **Git Sync**: Cleaned repository history and resolved merge conflicts
+- ✅ **AI Integration**: Enhanced provider support with DeepSeek API integration
+
+### 🚀 **Enhanced Features**
+- 🎯 **Improved Download Experience**: Better OS detection and availability indicators
+- 🔒 **Security Updates**: Enhanced authentication flow with Clerk
+- ⚡ **Performance**: Optimized build process and reduced bundle sizes
+- 🛠️ **Developer Experience**: Improved error handling and debugging tools
+
+---
+
 ## ⭐ **Why Morris IDE?**
 
 - 🎯 **6 Specialized AI Agents** - Each expert in their domain (Senior Developer, Code Architect, Debug Specialist, Security Expert, Performance Optimizer, Test Engineer)
@@ -98,6 +115,10 @@ After installation, configure your preferred AI provider:
    - Get API key: https://platform.openai.com
    - GPT-4o and GPT-4o Mini support
 
+4. **DeepSeek** (NEW!)
+   - Get API key: https://platform.deepseek.com
+   - Advanced reasoning capabilities, excellent for complex problem-solving
+
 ## 📋 System Requirements
 
 - **Windows**: Windows 10 or later
@@ -125,18 +146,42 @@ For developers who want to contribute or build from source:
 
 ```bash
 # Clone the repository
-git clone https://github.com/morris-ide/morris-ide.git
+git clone https://github.com/bmorris-code/morris-ide.git
 cd morris-ide
 
 # Install dependencies
 npm install
 
-# Start development server
+# Start development server (web only)
+npm run dev
+
+# Start development with Electron
 npm run dev:electron
 
-# Build for production
+# Build for production (web)
+npm run build
+
+# Build Electron app for production
 npm run electron:build
+
+# Build for specific platforms
+npm run electron:build:win    # Windows
+npm run electron:build:mac    # macOS
+npm run electron:build:linux  # Linux
+
+# Run linting
+npm run lint
 ```
+
+### 🛠️ **Development Requirements**
+- **Node.js**: 18.0.0 or later
+- **npm**: 9.0.0 or later
+- **Git**: For version control
+
+### 🐛 **Troubleshooting**
+- If build fails, run `npm run lint` to check for issues
+- For electron issues, ensure Node.js version matches requirements
+- Clear cache with `rm -rf node_modules && npm install` if needed
 
 ## 📚 Documentation
 
@@ -181,7 +226,38 @@ We welcome contributions! Please see our [Contributing Guide](./docs/contributin
 - [ ] **Mobile App** - Code on the go with AI assistance
 - [ ] **Advanced Analytics** - Code quality insights and metrics
 
-## 📄 **License**
+## � **Changelog**
+
+### **v1.0.0** - May 4, 2026
+🎉 **Initial Stable Release**
+
+#### ✨ **Features**
+- 🤖 6 Specialized AI Agents with multi-agent orchestration
+- 🧠 2M Token Context with Kimi K2.6 integration
+- ⚡ Real-time AI streaming responses
+- 🎨 Modern Monaco Editor with multi-language support
+- 📱 Cross-platform Electron app (Windows, macOS, Linux)
+- 🔒 Clerk authentication integration
+- 📥 Smart download system with OS detection
+
+#### 🔧 **Fixes & Improvements**
+- ✅ Fixed TypeScript compilation errors
+- ✅ Resolved ESLint configuration issues
+- ✅ Fixed cross-platform electron build scripts
+- ✅ Corrected GitHub release download URLs
+- ✅ Enhanced error handling and debugging
+- ✅ Improved Git workflow and repository management
+- ✅ Added DeepSeek AI provider support
+
+#### 🛠️ **Technical**
+- 📦 Optimized build process and bundle sizes
+- 🔧 Enhanced development tooling
+- 🚀 Improved performance and stability
+- 📚 Updated documentation and setup guides
+
+---
+
+## �📄 **License**
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
