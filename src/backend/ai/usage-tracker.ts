@@ -70,8 +70,9 @@ export class UsageTracker {
         dailyRequests: 0,
         dailyCost: 0
       };
-      stats = stored || defaultStats;
-      this.stats.set(key, stats);
+      const newStats = stored || defaultStats;
+      this.stats.set(key, newStats);
+      stats = newStats;
     }
 
     // At this point, stats is guaranteed to be defined
