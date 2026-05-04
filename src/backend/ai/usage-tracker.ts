@@ -59,7 +59,7 @@ export class UsageTracker {
     if (!stats) {
       // Try to load from storage
       const stored = await secureStorage.getData(key);
-      stats = stored || {
+      const defaultStats: UsageStats = {
         totalTokens: 0,
         totalRequests: 0,
         totalCost: 0,
@@ -70,25 +70,24 @@ export class UsageTracker {
         dailyRequests: 0,
         dailyCost: 0
       };
+      stats = stored || defaultStats;
       this.stats.set(key, stats);
     }
 
-    // Ensure stats is defined
-    if (!stats) {
-      throw new Error(`Failed to initialize usage stats for provider: ${provider}`);
-    }
+    // At this point, stats is guaranteed to be defined
+    const currentStats = stats!;
 
     // Reset daily stats if needed
     const today = new Date().toDateString();
-    if (stats.lastReset !== today) {
-      stats.dailyTokens = 0;
-      stats.dailyRequests = 0;
-      stats.dailyCost = 0;
-      stats.lastReset = today;
+    if (currentStats.lastReset !== today) {
+      currentStats.dailyTokens = 0;
+      currentStats.dailyRequests = 0;
+      currentStats.dailyCost = 0;
+      currentStats.lastReset = today;
       await this.saveStats(provider);
     }
 
-    return stats;
+    return currentStats;
   }
 
   // Track API usage
